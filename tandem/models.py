@@ -8,12 +8,10 @@ class Session(models.Model):
     score = models.IntegerField()
 
     def __str__(self):
-        return self.score
+        return str(self.name)
 
 
 class Question(models.Model):
-    session = models.ForeignKey(
-        Session, on_delete=models.CASCADE, related_name='questions')
     content = models.CharField('Question', max_length=255)
 
     def __str__(self):

@@ -8,3 +8,8 @@ from .models import Session, Question, Option
 
 def index(request):
     return render(request, "tandem/index.html")
+
+
+def questions(request):
+    questionAll = Question.objects.all()
+    print("questions ", questionAll)
