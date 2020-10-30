@@ -6,4 +6,5 @@ urlpatterns = [
 
     # API Routes
     path("questions", views.question, name="question"),
+    path("options", views.option, name="option"),
 ]
