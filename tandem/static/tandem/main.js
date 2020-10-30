@@ -5,49 +5,49 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 const load_questions = () => {
+  //Fetch data from db to get all questions
   fetch("/questions")
     .then((response) => response.json())
     .then((response) => {
-      // console.log("response ", response);
       get_questions(response);
-      // load_options();
     });
 };
 
 const get_questions = (response) => {
   let questions = response;
-  // console.log("qArr ", questions);
   let set = [];
 
   questions.forEach((question) => {
     set.push(question.content);
   });
-  // console.log("set ", set);
   load_options(set, questions);
 };
 
-// const load_options = () => {
-//   fetch("/options")
-//     .then((response) => response.json())
-//     .then((response) => {
-//       console.log("response ", response);
-//     });
-// };
-
 const load_options = (set, questions) => {
+  //Get all questions obj with corresponding id and content
   let all_questions = questions;
-  // console.log("all_questions ", all_questions);
 
+  //Variable to hold questions
   let questions_arr = set;
-  // console.log("questions_arr ", questions_arr);
 
-  let questionOpts = [];
+  //Variable to hold options
   var options_arr;
-  console.log("options_arr1 ", options_arr);
+
+  //Fetch options data from db and pass all data to start game
   fetch("/options")
     .then((response) => response.json())
     .then((data) => (options_arr = data))
-    .then(() => console.log("options_arr ", options_arr));
+    .then(() => startGame(all_questions, questions_arr, options_arr));
+};
 
-  // console.log("options_arr ", options_arr);
+//Block to start game with all data to manipulate
+const startGame = (all_questions, questions_arr, options_arr) => {
+  let questions = all_questions;
+  let questionsCount = questions_arr;
+  let options = options_arr;
+  let questionOpts = [];
+
+  console.log("questions ", questions);
+  console.log("questionsCount ", questionsCount);
+  console.log("options ", options);
 };
