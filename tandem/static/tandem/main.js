@@ -16,8 +16,19 @@ const load_questions = () => {
 const get_questions = (response) => {
   let questions = response;
   let set = [];
+  let quest_num = 10;
 
-  questions.forEach((question) => {
+  var result = new Array(quest_num),
+    len = questions.length,
+    taken = new Array(len);
+  if (quest_num > len)
+    throw new RangeError("number of questions not available");
+  while (quest_num--) {
+    var x = Math.floor(Math.random() * len);
+    result[quest_num] = questions[x in taken ? taken[x] : x];
+    taken[x] = --len in taken ? taken[len] : len;
+  }
+  result.forEach((question) => {
     set.push(question.content);
   });
   load_options(set, questions);
@@ -43,11 +54,64 @@ const load_options = (set, questions) => {
 //Block to start game with all data to manipulate
 const startGame = (all_questions, questions_arr, options_arr) => {
   let questions = all_questions;
-  let questionsCount = questions_arr;
+  let qSet = questions_arr;
   let options = options_arr;
-  let questionOpts = [];
 
   console.log("questions ", questions);
-  console.log("questionsCount ", questionsCount);
+  console.log("qSet ", qSet);
   console.log("options ", options);
+
+  let qA = 0;
+  let score = 0;
+  let selected = 3;
+  let questionOpts = [];
+  let breakLoop = qSet.length;
+  console.log("breakLoop ", breakLoop);
+
+  while (breakLoop > 0) {
+    breakLoop -= 1;
+
+    let question = questions[qA];
+    document.querySelector("#display_Q").innerHTML = `${question.content}`;
+    console.log("question ", question);
+
+    for (let j = 0; j < options.length; j++) {
+      let option = options[j];
+
+      if (question.id.toString() === option.questionId) {
+        questionOpts.push(option);
+      }
+    }
+    console.log("Qoptions", questionOpts);
+    questionOpts.forEach((option) => {
+      const display_opt = document.createElement("div");
+      display_opt.className = "col-md-6 col-lg-4 col-xl-3 card";
+      display_opt.style = "width: 10rem";
+      const optionBody = document.createElement("div");
+      optionBody.className = "card-body";
+      const showOpt = document.createElement("p");
+      showOpt.className = "card-text";
+      showOpt.innerHTML = `${option.content}`;
+      const brB = document.createElement("br");
+
+      document.querySelector("#rowR").appendChild(display_opt);
+      document.querySelector("#rowR").appendChild(optionBody);
+      document.querySelector("#rowR").appendChild(showOpt);
+      document.querySelector("#rowR").appendChild(brB);
+    });
+    // console.log("optionsLength", questionOpts.length)
+    let answer = questionOpts[selected - 1];
+    if (answer.correct === true) {
+      score += 10;
+    }
+    console.log("score: ", score);
+    // document
+    //   .querySelector("#next")
+    //   .addEventListener("click", () => (question = questions[qA++]));
+    question = questions[qA++];
+    questionOpts = [];
+    options.splice(0, questionOpts.length);
+  }
+  document.querySelector("#score").innerHTML = `Score: ${score}`;
+  // return score;
 };
