@@ -64,6 +64,7 @@ const startGame = (all_questions, questions_arr, options_arr) => {
   let qA = 0;
   let score = 0;
   let selected = 0;
+  let move_ = 0;
   let questionOpts = [];
   let breakLoop = qSet.length;
   console.log("breakLoop ", breakLoop);
@@ -91,18 +92,36 @@ const startGame = (all_questions, questions_arr, options_arr) => {
       value += 1;
       document.querySelector("#rowR").appendChild(showOpt);
     });
-    // console.log("optionsLength", questionOpts.length)
-    if (selected === 0) {
-      break;
+
+    let optVal = document.querySelector("#rowR");
+    selected = optVal.value;
+    console.log("selected1 ", selected);
+
+    const next = document
+      .querySelector("#next")
+      .addEventListener("click", () => {
+        move_ += 1;
+      });
+
+    if (next) {
+      continue;
     }
-    let answer = questionOpts[selected - 1];
-    if (answer.correct === true) {
+    // if (move_ === 0) {
+    //   break;
+    // }
+    optSelected = selected;
+    let answer = questionOpts[optSelected - 1];
+    if (answer !== undefined && answer.correct === true) {
       score += 10;
+      selected = 0;
     }
+    answer = {};
+
+    // console.log("selected2 ", selected);
     console.log("score: ", score);
-    // document
-    //   .querySelector("#next")
-    //   .addEventListener("click", () => (question = questions[qA++]));
+    document
+      .querySelector("#next")
+      .addEventListener("click", () => (question = questions[qA++]));
     question = questions[qA++];
     questionOpts = [];
     options.splice(0, questionOpts.length);
