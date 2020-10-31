@@ -72,43 +72,61 @@ const startGame = (all_questions, questions_arr, options_arr) => {
   while (breakLoop > 0) {
     breakLoop -= 1;
 
-    let question = questions[qA];
-    document.querySelector("#display_Q").innerHTML = `${question.content}`;
-    console.log("question ", question);
+    if (move_ === 0) {
+      let question = questions[qA];
+      document.querySelector("#display_Q").innerHTML = `${question.content}`;
+      console.log("question ", question);
 
-    for (let j = 0; j < options.length; j++) {
-      let option = options[j];
+      for (let j = 0; j < options.length; j++) {
+        let option = options[j];
 
-      if (question.id.toString() === option.questionId) {
-        questionOpts.push(option);
+        if (question.id.toString() === option.questionId) {
+          questionOpts.push(option);
+        }
       }
-    }
-    console.log("Qoptions", questionOpts);
-    let value = 1;
-    questionOpts.forEach((option) => {
-      const showOpt = document.createElement("option");
-      showOpt.value = `${value}`;
-      showOpt.innerHTML = `${option.content}`;
-      value += 1;
-      document.querySelector("#rowR").appendChild(showOpt);
-    });
-
-    let optVal = document.querySelector("#rowR");
-    selected = optVal.value;
-    console.log("selected1 ", selected);
-
-    const next = document
-      .querySelector("#next")
-      .addEventListener("click", () => {
-        move_ += 1;
+      console.log("Qoptions", questionOpts);
+      let value = 1;
+      questionOpts.forEach((option) => {
+        const showOpt = document.createElement("option");
+        showOpt.value = `${value}`;
+        showOpt.innerHTML = `${option.content}`;
+        value += 1;
+        document.querySelector("#rowR").appendChild(showOpt);
       });
 
-    if (next) {
+      let optVal = document.querySelector("#rowR");
+      selected = optVal.value;
+      console.log("selected1 ", selected);
+    }
+    move_ += 1;
+    // let question = questions[qA];
+    // document.querySelector("#display_Q").innerHTML = `${question.content}`;
+    // console.log("question ", question);
+
+    // for (let j = 0; j < options.length; j++) {
+    //   let option = options[j];
+
+    //   if (question.id.toString() === option.questionId) {
+    //     questionOpts.push(option);
+    //   }
+    // }
+    // console.log("Qoptions", questionOpts);
+    // let value = 1;
+    // questionOpts.forEach((option) => {
+    //   const showOpt = document.createElement("option");
+    //   showOpt.value = `${value}`;
+    //   showOpt.innerHTML = `${option.content}`;
+    //   value += 1;
+    //   document.querySelector("#rowR").appendChild(showOpt);
+    // });
+
+    // let optVal = document.querySelector("#rowR");
+    // selected = optVal.value;
+    // console.log("selected1 ", selected);
+
+    if (move_ === 1) {
       continue;
     }
-    // if (move_ === 0) {
-    //   break;
-    // }
     optSelected = selected;
     let answer = questionOpts[optSelected - 1];
     if (answer !== undefined && answer.correct === true) {
@@ -119,12 +137,27 @@ const startGame = (all_questions, questions_arr, options_arr) => {
 
     // console.log("selected2 ", selected);
     console.log("score: ", score);
+
+    // const continuue = () => {
+    //   move_ = 0;
+    //   document
+    //     .querySelector("#next")
+    //     .addEventListener("click", () => (question = questions[qA++]));
+    //   question = questions[qA++];
+    //   questionOpts = [];
+    //   options.splice(0, questionOpts.length);
+    // };
+
     document
       .querySelector("#next")
       .addEventListener("click", () => (question = questions[qA++]));
     question = questions[qA++];
     questionOpts = [];
     options.splice(0, questionOpts.length);
+    move_ -= 1;
+    document.querySelector("#next").addEventListener("click", () => {
+      move_ -= 1;
+    });
   }
   document.querySelector("#score").innerHTML = `Score: ${score}`;
   // return score;
