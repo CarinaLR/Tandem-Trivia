@@ -57,13 +57,13 @@ const startGame = (all_questions, questions_arr, options_arr) => {
   let qSet = questions_arr;
   let options = options_arr;
 
-  console.log("questions ", questions);
-  console.log("qSet ", qSet);
-  console.log("options ", options);
+  // console.log("questions ", questions);
+  // console.log("qSet ", qSet);
+  // console.log("options ", options);
 
   let qA = 0;
   let score = 0;
-  let selected = 3;
+  let selected = 0;
   let questionOpts = [];
   let breakLoop = qSet.length;
   console.log("breakLoop ", breakLoop);
@@ -83,23 +83,18 @@ const startGame = (all_questions, questions_arr, options_arr) => {
       }
     }
     console.log("Qoptions", questionOpts);
+    let value = 1;
     questionOpts.forEach((option) => {
-      const display_opt = document.createElement("div");
-      display_opt.className = "col-md-6 col-lg-4 col-xl-3 card";
-      display_opt.style = "width: 10rem";
-      const optionBody = document.createElement("div");
-      optionBody.className = "card-body";
-      const showOpt = document.createElement("p");
-      showOpt.className = "card-text";
+      const showOpt = document.createElement("option");
+      showOpt.value = `${value}`;
       showOpt.innerHTML = `${option.content}`;
-      const brB = document.createElement("br");
-
-      document.querySelector("#rowR").appendChild(display_opt);
-      document.querySelector("#rowR").appendChild(optionBody);
+      value += 1;
       document.querySelector("#rowR").appendChild(showOpt);
-      document.querySelector("#rowR").appendChild(brB);
     });
     // console.log("optionsLength", questionOpts.length)
+    if (selected === 0) {
+      break;
+    }
     let answer = questionOpts[selected - 1];
     if (answer.correct === true) {
       score += 10;
