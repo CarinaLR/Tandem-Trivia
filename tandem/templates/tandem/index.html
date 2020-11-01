@@ -50,22 +50,26 @@
     <div class="jumbotron">
         <p class="lead">Your Tandem-Trivia Question</p>
         <br><br>
-        <h1 id="display_Q">What was Tandem previous name?</h1>
+        <h1 id="display_list"></h1>
+
     </div>
+
     <div class="row" id="select">
-        <select class="custom-select" id="rowR" multiple>
+        <select class="custom-select" id="select_opt" onchange="selected_val()" multiple>
           <option  value="4" selected id="selected"></option>
         </select>
 
         <br>
     </div>
-        <div class="row">
+
+
+         <div class="row">
           <div class="col-md-6">
-          <p style="padding: 15px"><a href="#" class="btn btn-success btn-lg" style="background-color: purple; border-color: purple" id="next">Next</a></p>
+          <input type="button" style="padding: 15px" class="btn btn-success btn-lg" style="background-color: purple; border-color: purple" id="next" onclick="nextPage()" value="Next"/>
           </div>
         <br><br>
           <div class="col-md-6 text-md-right">
-          <p style="padding: 15px"><a href="#" class="btn btn-success btn-lg" style="background-color: blue; border-color: blue"id="submit">Submit</a></p>
+          <input type="button" style="padding: 15px" class="btn btn-success btn-lg" style="background-color: blue; border-color: blue"id="last" onclick="lastPage()" value="Submit"/>
           </div>
         </div>
 
