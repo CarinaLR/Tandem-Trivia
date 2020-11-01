@@ -51,26 +51,22 @@ const load_options = (set, questions) => {
     .then(() => startGame(all_questions, questions_arr, options_arr));
 };
 
+/* Check the data to manipulate and triggers the game */
+
+//Global variables that will be use in simulation code
 var all_questionOpts = [];
 var value = 1;
 
-//Block to start game with all data to manipulate
+//Block to start game
 const startGame = (all_questions, questions_arr, options_arr) => {
   let questions = all_questions;
   let qSet = questions_arr;
   let options = options_arr;
 
-  // console.log("questions ", questions);
-  // console.log("qSet ", qSet);
-  // console.log("options ", options);
-
   let qA = 0;
-  let score = 0;
   let selected = 0;
-  let move_ = 0;
   let questionOpts = [];
   let breakLoop = qSet.length;
-  console.log("breakLoop ", breakLoop);
 
   while (breakLoop > 0) {
     //Everytime there's an iteration the breakloop will decrease to meet conditioner
@@ -78,8 +74,6 @@ const startGame = (all_questions, questions_arr, options_arr) => {
 
     //get one question from the array of questions and the options for respective qst
     let question = questions[qA];
-    // document.querySelector("#display_Q").innerHTML = `${question.content}`;
-    console.log("question ", question);
 
     //Loop throught the options and separate the options that match the question id
     for (let j = 0; j < options.length; j++) {
@@ -90,31 +84,23 @@ const startGame = (all_questions, questions_arr, options_arr) => {
       }
     }
 
-    //Store question and options as one element in a outer array
+    //Store question and options as one element in a outer array. Data to use on display pagination
     all_questionOpts.push([question, questionOpts]);
-    console.log("INSIDELOOP ", all_questionOpts);
 
-    console.log("Qoptions", questionOpts);
-
+    //Simulate selected option to check while loop (simulation)
     selected = 4;
-    console.log("selected1 ", selected);
 
-    if (move_ === 1) {
-      continue;
-    }
-    //Grab value from the option selected and replace it as index in the options array and grab that eleemnt as answer from user
+    //Take value from the option selected and replace it as index in the options array and grab that eleemnt as answer from user (simulation)
     optSelected = selected;
     let answer = questionOpts[optSelected - 1];
-    //If there is an answer and the answer is correct, add 10 points to the score and set selected variable to zero
+
+    //If there is an answer and the answer is correct, add 10 points to the score and set selected variable to zero (simulation)
     if (answer !== undefined && answer.correct === true) {
       score += 10;
       selected = 0;
     }
-    //Answer object will go back to empty
+    //Answer object will go back to empty (simulation)
     answer = {};
-
-    // console.log("selected2 ", selected);
-    console.log("score: ", score);
 
     //The loop will continue with the next question
     question = questions[qA++];
@@ -123,10 +109,9 @@ const startGame = (all_questions, questions_arr, options_arr) => {
     //Options from first question will be deleted from array of optons
     options.splice(0, questionOpts.length);
   }
-  //Score will be display showing the storage result
-  document.querySelector("#score").innerHTML = `Score: ${score}`;
+  //Pass data to start game displaying on browser and interact with user
   get_collection(all_questionOpts);
-  // return all_questionOpts;
+  return all_questionOpts;
 };
 
 /* Implementing pagination */
@@ -145,42 +130,45 @@ var tempArrOpt = [];
 const get_collection = (all_questionOpts) => {
   //Get collection of data
   list = all_questionOpts;
-  console.log("InLOOP ", list);
 
   //Will get the number of pages appropiate to be display
   numberOfPages = getNumberOfPages();
-  console.log(numberOfPages);
 };
 
 const getNumberOfPages = () => {
   return Math.ceil(list.length / numberPerPage);
 };
 
-//It will get a value for next elemnt in the collection
-const nextPage = () => {
+//It will get a value for next element in the collection
+const nextQuestion = () => {
   currentPage += 1;
   loadList();
 };
 
-//It will get a value for next elemnt in the collection
-const lastPage = () => {
+//It will get a value for next element in the collection
+const lastQuestion = () => {
   currentPage = numberOfPages;
   loadList();
+
+  //Once the submit button has been clicked, will display the final score
+  document.getElementById(
+    "final_score"
+  ).innerHTML = `Congratulations! your final score is ${display_Score} points!`;
 };
 
-//It will get an array with the element that will be display
+//It will get an array with the element that will be displaying
 const loadList = () => {
   //Starting from current page
   var begin = (currentPage - 1) * numberPerPage;
   var end = begin + numberPerPage;
 
   pageList = list.slice(begin, end);
-  drawList();
-  check();
+  displayQuestion();
+  btnDisable();
 };
 
 //It will display question'content in object and option's content in array of objs
-const drawList = () => {
+const displayQuestion = () => {
   value = 1;
   document.getElementById("display_list").innerHTML = "";
 
@@ -201,7 +189,7 @@ const drawList = () => {
 };
 
 //Disable next button once question displaying is the last question, disable submit button when it is not the last question
-const check = () => {
+const btnDisable = () => {
   document.getElementById("next").disabled =
     currentPage == numberOfPages ? true : false;
   document.getElementById("last").disabled =
@@ -211,23 +199,24 @@ const check = () => {
 //Onchange in select tag, will grab the value of each option selected
 const selected_val = () => {
   let getVal = document.querySelector("#select_opt").value;
-  alert(getVal);
+  alert(`Your selected option was option number ${getVal}`);
   selectedOptVal = parseInt(getVal);
 
   checkAnswer(tempArrOpt, selectedOptVal);
 };
 
 const checkAnswer = (tempArrOpt, selectedOptVal) => {
-  //Grab value from the option selected and replace it as index in the options array and grab that eleemnt as answer from user
+  //Get value from the option selected and replace it as index in the options array and assign that eleemnt as answer from user
   optSelected = selectedOptVal;
   let answer = tempArrOpt[optSelected - 1];
-  console.log("answer-- ", answer);
-  //If there is an answer and the answer is correct, add 10 points to the score and set selected variable to zero
+
+  //If there is an answer and the answer is correct, add 10 points to the score
   if (answer !== undefined && answer.correct === true) {
     display_Score += 10;
-    console.log("display_Score ", display_Score);
   }
   //Temporary array gets empty for next option list
   empArrOpt = [];
-  console.log("display_Score ", display_Score);
+
+  //Score will be display showing the storage result
+  document.querySelector("#score").innerHTML = `Score: ${display_Score}`;
 };
