@@ -154,6 +154,7 @@ const lastQuestion = () => {
   document.getElementById(
     "final_score"
   ).innerHTML = `Congratulations! your final score is ${display_Score} points!`;
+  document.getElementById("final_score").style.color = "purple";
 };
 
 //It will get an array with the element that will be displaying
@@ -210,11 +211,13 @@ const checkAnswer = (tempArrOpt, selectedOptVal) => {
   optSelected = selectedOptVal;
   let answer = tempArrOpt[optSelected - 1];
 
+  document.getElementById("correct_answer").innerHTML = "";
+
   //If there is an answer and the answer is correct, add 10 points to the score
   if (answer !== undefined && answer.correct === true) {
     display_Score += 10;
 
-    document.getElementById("correct_answer").innerHTML = "Correct!";
+    document.getElementById("correct_answer").innerHTML = "Correct!" + "";
     document.getElementById("correct_answer").style.color = "green";
   }
   //Temporary array gets empty for next option list
