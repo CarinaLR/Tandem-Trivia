@@ -213,6 +213,9 @@ const checkAnswer = (tempArrOpt, selectedOptVal) => {
   //If there is an answer and the answer is correct, add 10 points to the score
   if (answer !== undefined && answer.correct === true) {
     display_Score += 10;
+
+    document.getElementById("correct_answer").innerHTML = "Correct!";
+    document.getElementById("correct_answer").style.color = "green";
   }
   //Temporary array gets empty for next option list
   empArrOpt = [];
